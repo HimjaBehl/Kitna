@@ -1,0 +1,1380 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: Kitna - Money clarity dashboard for creators and influencer managers
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: deals
+    description: Deal management
+  - name: payments
+    description: Payment management
+  - name: expenses
+    description: Expense management
+  - name: dashboard
+    description: Dashboard metrics
+  - name: receivables
+    description: Receivables tracking
+  - name: compliance
+    description: Compliance and tax tracking
+  - name: profit
+    description: Profit analytics
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /auth/signup:
+    post:
+      operationId: signup
+      tags: [auth]
+      summary: Sign up a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignupBody"
+      responses:
+        "201":
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Email already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Log in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginBody"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Log out
+      responses:
+        "200":
+          description: Logged out
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/me/settings:
+    patch:
+      operationId: updateSettings
+      tags: [auth]
+      summary: Update user settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSettingsBody"
+      responses:
+        "200":
+          description: Settings updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /deals:
+    get:
+      operationId: getDeals
+      tags: [deals]
+      summary: List all deals
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: income_type
+          in: query
+          schema:
+            type: string
+        - name: search
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of deals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Deal"
+
+    post:
+      operationId: createDeal
+      tags: [deals]
+      summary: Create a new deal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDealBody"
+      responses:
+        "201":
+          description: Deal created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Deal"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /deals/{id}:
+    get:
+      operationId: getDeal
+      tags: [deals]
+      summary: Get a deal by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deal details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DealWithPayments"
+        "404":
+          description: Deal not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    patch:
+      operationId: updateDeal
+      tags: [deals]
+      summary: Update a deal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDealBody"
+      responses:
+        "200":
+          description: Deal updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Deal"
+        "404":
+          description: Deal not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      operationId: deleteDeal
+      tags: [deals]
+      summary: Delete a deal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deal deleted
+        "404":
+          description: Deal not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /payments:
+    get:
+      operationId: getPayments
+      tags: [payments]
+      summary: List all payments
+      parameters:
+        - name: deal_id
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of payments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Payment"
+
+    post:
+      operationId: createPayment
+      tags: [payments]
+      summary: Record a payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePaymentBody"
+      responses:
+        "201":
+          description: Payment recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Payment"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /payments/{id}:
+    patch:
+      operationId: updatePayment
+      tags: [payments]
+      summary: Update a payment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePaymentBody"
+      responses:
+        "200":
+          description: Payment updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Payment"
+        "404":
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      operationId: deletePayment
+      tags: [payments]
+      summary: Delete a payment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Payment deleted
+        "404":
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /expenses:
+    get:
+      operationId: getExpenses
+      tags: [expenses]
+      summary: List all expenses
+      parameters:
+        - name: deal_id
+          in: query
+          schema:
+            type: integer
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of expenses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Expense"
+
+    post:
+      operationId: createExpense
+      tags: [expenses]
+      summary: Create an expense
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateExpenseBody"
+      responses:
+        "201":
+          description: Expense created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Expense"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /expenses/{id}:
+    patch:
+      operationId: updateExpense
+      tags: [expenses]
+      summary: Update an expense
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateExpenseBody"
+      responses:
+        "200":
+          description: Expense updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Expense"
+        "404":
+          description: Expense not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      operationId: deleteExpense
+      tags: [expenses]
+      summary: Delete an expense
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Expense deleted
+        "404":
+          description: Expense not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Get dashboard summary metrics
+      responses:
+        "200":
+          description: Dashboard metrics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
+  /dashboard/monthly-trend:
+    get:
+      operationId: getMonthlyTrend
+      tags: [dashboard]
+      summary: Get monthly income and expense trend
+      responses:
+        "200":
+          description: Monthly trend data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MonthlyTrend"
+
+  /dashboard/income-by-type:
+    get:
+      operationId: getIncomeByType
+      tags: [dashboard]
+      summary: Get income breakdown by type
+      responses:
+        "200":
+          description: Income by type
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IncomeByType"
+
+  /dashboard/recent-activity:
+    get:
+      operationId: getRecentActivity
+      tags: [dashboard]
+      summary: Get recent deals, payments, and expenses
+      responses:
+        "200":
+          description: Recent activity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecentActivity"
+
+  /receivables:
+    get:
+      operationId: getReceivables
+      tags: [receivables]
+      summary: Get all pending and overdue receivables
+      responses:
+        "200":
+          description: Receivables list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Receivable"
+
+  /profit:
+    get:
+      operationId: getProfitSummary
+      tags: [profit]
+      summary: Get profit summary and analytics
+      responses:
+        "200":
+          description: Profit summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfitSummary"
+
+  /compliance:
+    get:
+      operationId: getComplianceSummary
+      tags: [compliance]
+      summary: Get compliance summary including GST, TDS, and barter totals
+      responses:
+        "200":
+          description: Compliance summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ComplianceSummary"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+        currency:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - email
+        - role
+        - currency
+        - createdAt
+        - updatedAt
+
+    SignupBody:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+        currency:
+          type: string
+      required:
+        - name
+        - email
+        - password
+
+    LoginBody:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        token:
+          type: string
+      required:
+        - user
+        - token
+
+    UpdateSettingsBody:
+      type: object
+      properties:
+        name:
+          type: string
+        currency:
+          type: string
+        role:
+          type: string
+
+    Deal:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        brandName:
+          type: string
+        campaignName:
+          type: string
+        incomeType:
+          type: string
+        amountAgreed:
+          type: string
+        currency:
+          type: string
+        status:
+          type: string
+        isBarter:
+          type: boolean
+        barterEstimatedValue:
+          type: ["string", "null"]
+        barterDescription:
+          type: ["string", "null"]
+        taxableFlag:
+          type: boolean
+        startDate:
+          type: ["string", "null"]
+          format: date-time
+        dueDate:
+          type: ["string", "null"]
+          format: date-time
+        notes:
+          type: ["string", "null"]
+        invoiceNumber:
+          type: ["string", "null"]
+        invoiceDate:
+          type: ["string", "null"]
+          format: date-time
+        invoiceStatus:
+          type: string
+        invoiceAmount:
+          type: ["string", "null"]
+        managerCutType:
+          type: ["string", "null"]
+        managerCutValue:
+          type: ["string", "null"]
+        agencyCutType:
+          type: ["string", "null"]
+        agencyCutValue:
+          type: ["string", "null"]
+        gstApplicable:
+          type: boolean
+        taxableValue:
+          type: ["string", "null"]
+        tdsApplicable:
+          type: boolean
+        tdsAmount:
+          type: ["string", "null"]
+        totalReceived:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - brandName
+        - campaignName
+        - incomeType
+        - amountAgreed
+        - currency
+        - status
+        - isBarter
+        - taxableFlag
+        - invoiceStatus
+        - gstApplicable
+        - tdsApplicable
+        - totalReceived
+        - createdAt
+        - updatedAt
+
+    DealWithPayments:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        brandName:
+          type: string
+        campaignName:
+          type: string
+        incomeType:
+          type: string
+        amountAgreed:
+          type: string
+        currency:
+          type: string
+        status:
+          type: string
+        isBarter:
+          type: boolean
+        barterEstimatedValue:
+          type: ["string", "null"]
+        barterDescription:
+          type: ["string", "null"]
+        taxableFlag:
+          type: boolean
+        startDate:
+          type: ["string", "null"]
+          format: date-time
+        dueDate:
+          type: ["string", "null"]
+          format: date-time
+        notes:
+          type: ["string", "null"]
+        invoiceNumber:
+          type: ["string", "null"]
+        invoiceDate:
+          type: ["string", "null"]
+          format: date-time
+        invoiceStatus:
+          type: string
+        invoiceAmount:
+          type: ["string", "null"]
+        managerCutType:
+          type: ["string", "null"]
+        managerCutValue:
+          type: ["string", "null"]
+        agencyCutType:
+          type: ["string", "null"]
+        agencyCutValue:
+          type: ["string", "null"]
+        gstApplicable:
+          type: boolean
+        taxableValue:
+          type: ["string", "null"]
+        tdsApplicable:
+          type: boolean
+        tdsAmount:
+          type: ["string", "null"]
+        totalReceived:
+          type: string
+        payments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Payment"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - brandName
+        - campaignName
+        - incomeType
+        - amountAgreed
+        - currency
+        - status
+        - isBarter
+        - taxableFlag
+        - invoiceStatus
+        - gstApplicable
+        - tdsApplicable
+        - totalReceived
+        - payments
+        - createdAt
+        - updatedAt
+
+    CreateDealBody:
+      type: object
+      properties:
+        brandName:
+          type: string
+        campaignName:
+          type: string
+        incomeType:
+          type: string
+        amountAgreed:
+          type: string
+        currency:
+          type: string
+        isBarter:
+          type: boolean
+        barterEstimatedValue:
+          type: ["string", "null"]
+        barterDescription:
+          type: ["string", "null"]
+        taxableFlag:
+          type: boolean
+        startDate:
+          type: ["string", "null"]
+        dueDate:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        invoiceNumber:
+          type: ["string", "null"]
+        invoiceDate:
+          type: ["string", "null"]
+        invoiceStatus:
+          type: string
+        invoiceAmount:
+          type: ["string", "null"]
+        managerCutType:
+          type: ["string", "null"]
+        managerCutValue:
+          type: ["string", "null"]
+        agencyCutType:
+          type: ["string", "null"]
+        agencyCutValue:
+          type: ["string", "null"]
+        gstApplicable:
+          type: boolean
+        taxableValue:
+          type: ["string", "null"]
+        tdsApplicable:
+          type: boolean
+        tdsAmount:
+          type: ["string", "null"]
+      required:
+        - brandName
+        - campaignName
+        - incomeType
+        - amountAgreed
+
+    UpdateDealBody:
+      type: object
+      properties:
+        brandName:
+          type: string
+        campaignName:
+          type: string
+        incomeType:
+          type: string
+        amountAgreed:
+          type: string
+        currency:
+          type: string
+        status:
+          type: string
+        isBarter:
+          type: boolean
+        barterEstimatedValue:
+          type: ["string", "null"]
+        barterDescription:
+          type: ["string", "null"]
+        taxableFlag:
+          type: boolean
+        startDate:
+          type: ["string", "null"]
+        dueDate:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        invoiceNumber:
+          type: ["string", "null"]
+        invoiceDate:
+          type: ["string", "null"]
+        invoiceStatus:
+          type: string
+        invoiceAmount:
+          type: ["string", "null"]
+        managerCutType:
+          type: ["string", "null"]
+        managerCutValue:
+          type: ["string", "null"]
+        agencyCutType:
+          type: ["string", "null"]
+        agencyCutValue:
+          type: ["string", "null"]
+        gstApplicable:
+          type: boolean
+        taxableValue:
+          type: ["string", "null"]
+        tdsApplicable:
+          type: boolean
+        tdsAmount:
+          type: ["string", "null"]
+
+    Payment:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        dealId:
+          type: ["integer", "null"]
+        amountReceived:
+          type: string
+        currency:
+          type: string
+        paymentMethod:
+          type: string
+        receivedDate:
+          type: string
+          format: date-time
+        notes:
+          type: ["string", "null"]
+        tdsApplicable:
+          type: boolean
+        tdsAmount:
+          type: ["string", "null"]
+        dealBrandName:
+          type: ["string", "null"]
+        dealCampaignName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - amountReceived
+        - currency
+        - paymentMethod
+        - receivedDate
+        - tdsApplicable
+        - createdAt
+        - updatedAt
+
+    CreatePaymentBody:
+      type: object
+      properties:
+        dealId:
+          type: ["integer", "null"]
+        amountReceived:
+          type: string
+        currency:
+          type: string
+        paymentMethod:
+          type: string
+        receivedDate:
+          type: string
+        notes:
+          type: ["string", "null"]
+        tdsApplicable:
+          type: boolean
+        tdsAmount:
+          type: ["string", "null"]
+      required:
+        - amountReceived
+        - paymentMethod
+        - receivedDate
+
+    UpdatePaymentBody:
+      type: object
+      properties:
+        dealId:
+          type: ["integer", "null"]
+        amountReceived:
+          type: string
+        currency:
+          type: string
+        paymentMethod:
+          type: string
+        receivedDate:
+          type: string
+        notes:
+          type: ["string", "null"]
+        tdsApplicable:
+          type: boolean
+        tdsAmount:
+          type: ["string", "null"]
+
+    Expense:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        dealId:
+          type: ["integer", "null"]
+        title:
+          type: string
+        category:
+          type: string
+        amount:
+          type: string
+        currency:
+          type: string
+        expenseDate:
+          type: string
+          format: date-time
+        notes:
+          type: ["string", "null"]
+        isRecurring:
+          type: boolean
+        recurringFrequency:
+          type: ["string", "null"]
+        vendorOrPayee:
+          type: ["string", "null"]
+        dealBrandName:
+          type: ["string", "null"]
+        dealCampaignName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - title
+        - category
+        - amount
+        - currency
+        - expenseDate
+        - isRecurring
+        - createdAt
+        - updatedAt
+
+    CreateExpenseBody:
+      type: object
+      properties:
+        dealId:
+          type: ["integer", "null"]
+        title:
+          type: string
+        category:
+          type: string
+        amount:
+          type: string
+        currency:
+          type: string
+        expenseDate:
+          type: string
+        notes:
+          type: ["string", "null"]
+        isRecurring:
+          type: boolean
+        recurringFrequency:
+          type: ["string", "null"]
+        vendorOrPayee:
+          type: ["string", "null"]
+      required:
+        - title
+        - category
+        - amount
+        - expenseDate
+
+    UpdateExpenseBody:
+      type: object
+      properties:
+        dealId:
+          type: ["integer", "null"]
+        title:
+          type: string
+        category:
+          type: string
+        amount:
+          type: string
+        currency:
+          type: string
+        expenseDate:
+          type: string
+        notes:
+          type: ["string", "null"]
+        isRecurring:
+          type: boolean
+        recurringFrequency:
+          type: ["string", "null"]
+        vendorOrPayee:
+          type: ["string", "null"]
+
+    DashboardSummary:
+      type: object
+      properties:
+        totalBooked:
+          type: string
+        totalReceived:
+          type: string
+        pendingReceivables:
+          type: string
+        totalExpenses:
+          type: string
+        netProfit:
+          type: string
+        potentialProfit:
+          type: string
+        overdueCount:
+          type: integer
+        activeDealsCount:
+          type: integer
+        currency:
+          type: string
+      required:
+        - totalBooked
+        - totalReceived
+        - pendingReceivables
+        - totalExpenses
+        - netProfit
+        - potentialProfit
+        - overdueCount
+        - activeDealsCount
+        - currency
+
+    MonthlyTrend:
+      type: object
+      properties:
+        month:
+          type: string
+        received:
+          type: string
+        expenses:
+          type: string
+        booked:
+          type: string
+      required:
+        - month
+        - received
+        - expenses
+        - booked
+
+    IncomeByType:
+      type: object
+      properties:
+        type:
+          type: string
+        amount:
+          type: string
+        count:
+          type: integer
+      required:
+        - type
+        - amount
+        - count
+
+    RecentActivity:
+      type: object
+      properties:
+        deals:
+          type: array
+          items:
+            $ref: "#/components/schemas/Deal"
+        payments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Payment"
+        expenses:
+          type: array
+          items:
+            $ref: "#/components/schemas/Expense"
+      required:
+        - deals
+        - payments
+        - expenses
+
+    Receivable:
+      type: object
+      properties:
+        dealId:
+          type: integer
+        brandName:
+          type: string
+        campaignName:
+          type: string
+        amountAgreed:
+          type: string
+        totalReceived:
+          type: string
+        pendingAmount:
+          type: string
+        currency:
+          type: string
+        dueDate:
+          type: ["string", "null"]
+          format: date-time
+        daysPending:
+          type: ["integer", "null"]
+        status:
+          type: string
+        incomeType:
+          type: string
+      required:
+        - dealId
+        - brandName
+        - campaignName
+        - amountAgreed
+        - totalReceived
+        - pendingAmount
+        - currency
+        - status
+        - incomeType
+
+    ProfitSummary:
+      type: object
+      properties:
+        totalBooked:
+          type: string
+        totalReceived:
+          type: string
+        pendingReceivables:
+          type: string
+        totalExpenses:
+          type: string
+        netProfit:
+          type: string
+        potentialProfit:
+          type: string
+        expensesByCategory:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExpenseByCategory"
+        topDeals:
+          type: array
+          items:
+            $ref: "#/components/schemas/DealProfitability"
+        currency:
+          type: string
+      required:
+        - totalBooked
+        - totalReceived
+        - pendingReceivables
+        - totalExpenses
+        - netProfit
+        - potentialProfit
+        - expensesByCategory
+        - topDeals
+        - currency
+
+    ExpenseByCategory:
+      type: object
+      properties:
+        category:
+          type: string
+        amount:
+          type: string
+        percentage:
+          type: string
+      required:
+        - category
+        - amount
+        - percentage
+
+    DealProfitability:
+      type: object
+      properties:
+        dealId:
+          type: integer
+        brandName:
+          type: string
+        campaignName:
+          type: string
+        amountAgreed:
+          type: string
+        totalReceived:
+          type: string
+        linkedExpenses:
+          type: string
+        netValue:
+          type: string
+        status:
+          type: string
+      required:
+        - dealId
+        - brandName
+        - campaignName
+        - amountAgreed
+        - totalReceived
+        - linkedExpenses
+        - netValue
+        - status
+
+    ComplianceSummary:
+      type: object
+      properties:
+        taxableRevenue:
+          type: string
+        gstThreshold:
+          type: string
+        gstThresholdProgress:
+          type: number
+        gstAlertLevel:
+          type: string
+        tdsDeducted:
+          type: string
+        tdsDeals:
+          type: integer
+        barterValue:
+          type: string
+        barterDeals:
+          type: integer
+        invoicesPending:
+          type: integer
+        invoicesRaised:
+          type: integer
+        invoicesPaid:
+          type: integer
+        currency:
+          type: string
+      required:
+        - taxableRevenue
+        - gstThreshold
+        - gstThresholdProgress
+        - gstAlertLevel
+        - tdsDeducted
+        - tdsDeals
+        - barterValue
+        - barterDeals
+        - invoicesPending
+        - invoicesRaised
+        - invoicesPaid
+        - currency

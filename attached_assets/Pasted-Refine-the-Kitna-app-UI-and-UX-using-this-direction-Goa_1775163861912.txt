@@ -1,0 +1,159 @@
+Refine the Kitna app UI and UX using this direction:
+
+## Goal
+
+Keep the app full-stack and functional, but make the visual experience closely match a polished finance dashboard with the same clarity, friendliness, and product feel as a premium prototype.
+
+## Brand lockup
+
+Use the brand in the sidebar exactly like this:
+
+* primary logo text: **kitna**
+* small text beneath it: **actual bana?**
+
+Keep it minimal, lowercase, and premium.
+
+## Visual style
+
+The app should feel:
+
+* clean
+* premium
+* modern
+* calm
+* user-friendly
+* founder-grade
+* creator-business focused
+
+It should NOT feel:
+
+* generic admin dashboard
+* accounting software
+* loud fintech app
+* overly colorful template
+
+## Layout
+
+Use:
+
+* dark left sidebar
+* light main workspace
+* spacious page headers
+* clean summary cards
+* elegant tables and deal cards
+* strong but minimal typography hierarchy
+
+## Color system
+
+Do not use too many unrelated colors.
+Use this controlled palette:
+
+* Brand green: #22C55E
+* Deep green: #15803D
+* Soft green tint: #F0FDF4
+* Navy/ink: #0F172A
+* Blue accent: #2563EB
+* Amber warning: #F59E0B
+* Red alert: #EF4444
+* White: #FFFFFF
+* Light background: #F8FAFC
+* Border: #E5E7EB
+* Text primary: #111827
+* Text secondary: #6B7280
+
+## Important color rules
+
+* positive / money received / profit = green
+* pending / waiting = amber
+* overdue / risk = red
+* structure / progress / navigation accents = blue or navy
+* neutrals for supporting UI
+* no rainbow charts
+* no random bright colors
+
+## Dashboard cards
+
+Keep the top summary card layout and make it premium.
+Show:
+
+* Total Booked
+* Received
+* Pending
+* Expenses
+* Net Profit
+
+Use human-friendly captions like:
+
+* Expected money
+* Actually got
+* Still to come
+* Total spent
+* What you kept
+
+## Charts
+
+Keep charts elegant and controlled.
+
+### Monthly Flow chart
+
+* Received = green
+* Expenses = muted red
+
+### Expense category donut
+
+Use only muted brand colors from the approved palette.
+No rainbow palette.
+
+## Deals page
+
+Keep the representation very easy to scan.
+
+Each deal card should show:
+
+* brand/client name
+* status badge
+* short deliverable summary
+* received amount out of total
+* progress bar
+* start date
+* due date
+* pending amount on the right
+* income type badge
+
+This page should feel highly readable and satisfying.
+
+## Status badges
+
+Use subtle, premium badges:
+
+* Active = soft blue
+* Completed / Paid = soft green
+* Overdue = soft red
+* Barter = muted neutral or amber-tinted
+
+## Buttons
+
+Primary buttons should be clear and consistent:
+
+* Add Deal
+* Add Payment
+* Add Expense
+
+Use brand-consistent sizing, rounded corners, and spacing.
+
+## Typography
+
+Use a strong but minimal hierarchy:
+
+* large page title
+* small muted supporting line
+* clean card titles
+* compact labels and badges
+
+## Overall
+
+Preserve the clarity and friendly product language.
+Make the app feel like a polished creator-business command center.
+
+Do not change the product structure.
+Improve visual polish, chart colors, card styling, spacing, badge styling, and page readability.

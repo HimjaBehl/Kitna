@@ -1,0 +1,136 @@
+Refine Kitna further across Deals, Payments, Smart Add, and overall product polish.
+
+## Goal
+
+Make Kitna feel like a cohesive, premium, creator-business command center.
+The dashboard is in a good place now. Improve the working pages so they feel equally strong, useful, and polished.
+
+## 1. Deals page improvements
+
+Make each deal card feel more informative and action-oriented.
+
+Add or improve:
+
+* clearer due date visibility
+* better overdue / due soon / pending emphasis
+* clearer “amount still to come” presentation
+* more useful right-side action area
+* stronger distinction between deal types
+* better spacing and hierarchy inside each deal card
+
+Each deal should answer:
+
+* what is this deal
+* how much was agreed
+* how much was received
+* how much is still pending
+* what should I do next
+
+If useful, add a small “next action” hint like:
+
+* “Payment due in 2 days”
+* “Follow up needed”
+* “Final payment pending”
+
+## 2. Payments page improvements
+
+Make the Payments page feel more contextual, not just like a record list.
+
+Improve each payment item so it shows:
+
+* linked deal / brand clearly
+* payment amount and date
+* payment method
+* whether this payment was partial or final
+* how much remains pending on the linked deal after this payment
+
+The Payments page should help the user understand:
+
+* what money came in
+* which deal it belongs to
+* whether the deal is now complete or still pending
+
+Use subtle badges like:
+
+* Partial
+* Final
+* Advance
+* Completed deal
+
+## 3. Smart Add improvements
+
+Keep the current Smart Add modal structure, but make it feel more useful and trustworthy.
+
+Improve:
+
+* visual explanation of supported source types
+* clarity on what Kitna will extract
+* supporting helper text
+* empty states for Import CSV and Email tabs
+
+Add lightweight supported-source chips or labels such as:
+
+* WhatsApp
+* Email
+* Invoice
+* Affiliate dashboard
+* Payout screenshot
+
+Use friendly language like:
+
+* “Upload a screenshot and Kitna will try to detect brand, amount, dates, and deal type.”
+* “You can always review before saving.”
+
+For the Email tab, show a polished placeholder state:
+
+* “Forward emails to Kitna coming soon”
+
+For the CSV tab, make the first step feel simple and guided.
+
+## 4. Product-wide polish
+
+Make sure all pages feel like one product.
+
+Standardize:
+
+* spacing
+* card padding
+* badge styles
+* button hierarchy
+* empty states
+* section subtitles
+* icon sizes
+* border softness
+
+Use one consistent tone across the app:
+
+* clear
+* premium
+* calm
+* creator-friendly
+* not accounting-heavy
+
+## 5. Empty states and liveliness
+
+Improve empty states across the app so the product feels intentional, not unfinished.
+
+Especially refine:
+
+* recent expenses
+* activity page
+* receivables when there are no overdue deals
+* smart add tabs with no data yet
+
+Examples of tone:
+
+* “No expenses yet”
+* “Nothing overdue right now”
+* “Upload a screenshot to get started”
+* “Kitna will help you turn messy inputs into clean entries”
+
+## Outcome
+
+After this refinement, Dashboard, Deals, Payments, and Smart Add should all feel equally polished and product-ready.
+
+Do not break existing functionality.
+Focus on hierarchy, contextual detail, clarity, trust, and consistency.

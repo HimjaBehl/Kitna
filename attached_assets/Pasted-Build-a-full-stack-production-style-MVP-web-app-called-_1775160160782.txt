@@ -1,0 +1,347 @@
+Build a **full-stack production-style MVP** web app called **Kitna**.
+
+## Goal
+
+Kitna is a money clarity dashboard for creators and influencer managers.
+
+It helps users answer:
+
+* how much work they booked
+* how much money actually came in
+* how much is still pending
+* how much they spent
+* how much they actually kept
+
+This is not a mockup or prototype.
+Build it as a real full-stack app with:
+
+* working frontend
+* working backend
+* PostgreSQL database
+* Prisma ORM
+* auth
+* CRUD operations
+* seeded sample data
+* dashboard calculations
+
+## Tech stack
+
+Use:
+
+* React
+* Vite
+* Tailwind CSS
+* shadcn/ui
+* Node.js
+* Express
+* PostgreSQL
+* Prisma
+
+## Product structure
+
+### Core entities
+
+1. Users
+2. Deals
+3. Payments
+4. Expenses
+5. Activity logs
+
+### Core logic
+
+* A deal = expected/booked money
+* A payment = actual money received
+* A single deal can have multiple payments
+* An expense may optionally be linked to a deal
+* Receivables = unpaid amount from a deal
+* Net profit = total received minus total expenses
+
+## Database models
+
+### User
+
+* id
+* name
+* email
+* password_hash
+* role
+* currency
+* created_at
+* updated_at
+
+### Deal
+
+* id
+* user_id
+* brand_name
+* campaign_name
+* income_type
+* amount_agreed
+* currency
+* status
+* is_barter
+* barter_estimated_value
+* start_date
+* due_date
+* notes
+* created_at
+* updated_at
+
+### Payment
+
+* id
+* user_id
+* deal_id
+* amount_received
+* currency
+* payment_method
+* received_date
+* notes
+* created_at
+* updated_at
+
+### Expense
+
+* id
+* user_id
+* deal_id nullable
+* title
+* category
+* amount
+* currency
+* expense_date
+* notes
+* created_at
+* updated_at
+
+### ActivityLog
+
+* id
+* user_id
+* entity_type
+* entity_id
+* action_type
+* description
+* created_at
+
+## Enums
+
+### income_type
+
+* brand_collab
+* ugc
+* affiliate
+* platform_payout
+* retainer
+* subscription
+* barter
+* other
+
+### deal_status
+
+* draft
+* active
+* pending_payment
+* partially_paid
+* paid
+* overdue
+* cancelled
+
+### payment_method
+
+* bank_transfer
+* upi
+* platform_payout
+* gateway
+* cash
+* other
+
+### expense_category
+
+* editing
+* production
+* travel
+* styling
+* props
+* ads
+* software
+* equipment
+* freelancers
+* manager_commission
+* tax
+* other
+
+## API routes
+
+### Auth
+
+* POST /auth/signup
+* POST /auth/login
+* GET /auth/me
+
+### Deals
+
+* GET /deals
+* POST /deals
+* PATCH /deals/:id
+* DELETE /deals/:id
+
+### Payments
+
+* GET /payments
+* POST /payments
+* PATCH /payments/:id
+* DELETE /payments/:id
+
+### Expenses
+
+* GET /expenses
+* POST /expenses
+* PATCH /expenses/:id
+* DELETE /expenses/:id
+
+### Metrics
+
+* GET /dashboard/summary
+* GET /receivables
+* GET /profit
+
+## Dashboard calculations
+
+Calculate dynamically:
+
+* Total Booked = sum of amount_agreed across non-barter deals
+* Total Received = sum of all payments
+* Pending Receivables = total unpaid across deals
+* Total Expenses = sum of all expenses
+* Net Profit = total received minus total expenses
+* Potential Profit = total booked minus total expenses
+
+### Deal status rules
+
+* no payment yet + due date future = pending_payment
+* partial payment received = partially_paid
+* full payment received = paid
+* unpaid after due date = overdue
+
+## Pages
+
+### 1. Auth
+
+Simple signup/login page.
+
+### 2. Dashboard
+
+Show:
+
+* Total Booked
+* Total Received
+* Pending Receivables
+* Total Expenses
+* Net Profit
+
+Also show:
+
+* monthly trend chart
+* income by type
+* overdue receivables
+* recent deals
+* recent payments
+* recent expenses
+
+### 3. Deals
+
+CRUD page with filters.
+
+### 4. Payments
+
+CRUD page with ability to link payments to deals.
+
+### 5. Expenses
+
+CRUD page with optional deal linking.
+
+### 6. Receivables
+
+List all pending and overdue amounts with brand, campaign, due date, days pending, and amount due.
+
+### 7. Profit
+
+Show booked revenue, received revenue, pending, expenses, net profit, potential profit, top expense categories, and profitable deals.
+
+### 8. Settings
+
+Basic profile and currency settings.
+
+## UX rules
+
+The app should feel premium, minimal, and clean.
+It should not feel like accounting software.
+Primary actions:
+
+* Add Deal
+* Add Payment
+* Add Expense
+* Add Barter
+
+Use polished cards, responsive tables, clean forms, and subtle green accents.
+
+## Brand
+
+Name: Kitna
+
+### Palette
+
+* Primary green: #22C55E
+* Deep green: #15803D
+* Soft green tint: #F0FDF4
+* White: #FFFFFF
+* Text primary: #111827
+* Text secondary: #6B7280
+* Border: #E5E7EB
+* Optional dark sidebar: #0F172A
+
+### Tone
+
+* modern
+* premium
+* Indian but not gimmicky
+* creator-business focused
+
+## Seed data
+
+Create realistic sample data:
+
+* Instagram brand deal
+* YouTube payout
+* UGC campaign
+* affiliate income
+* monthly retainer
+* gifted barter collaboration
+* editor expense
+* travel expense
+* manager commission
+
+Make some deals:
+
+* fully paid
+* partially paid
+* pending
+* overdue
+
+## Output requirement
+
+Generate the app as a real full-stack MVP with:
+
+* proper folder structure
+* frontend and backend wired together
+* Prisma schema
+* migrations
+* seed script
+* working CRUD flows
+* dashboard metrics
+* real database persistence
+* responsive UI
+
+Do not generate a fake static prototype.
+Generate an actually runnable full-stack app.

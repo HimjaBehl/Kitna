@@ -1,0 +1,160 @@
+Implement **Smart Assisted Entry** in Kitna.
+
+## Goal
+
+Allow the user to upload a screenshot or image and let Kitna extract likely deal/payment/expense/barter information, then ask the user to confirm before creating an entry.
+
+This feature should make Kitna feel like a smart creator-business assistant, not accounting software.
+
+## Supported uploads for v1
+
+* WhatsApp screenshot
+* email screenshot
+* invoice screenshot
+* affiliate dashboard screenshot
+* payout screenshot
+
+## User flow
+
+1. User clicks **Smart Add**
+2. User uploads an image
+3. Backend analyzes the image
+4. Kitna returns a structured extracted draft
+5. UI shows:
+
+   * detected entry type
+   * extracted fields
+   * editable form
+   * confidence
+   * missing fields
+6. User clicks:
+
+   * Create entry
+   * Save draft
+   * Discard
+
+## New UI
+
+### Add a new primary action
+
+* Smart Add
+
+### Add Activity page to sidebar
+
+Sidebar order:
+
+* Dashboard
+* Deals
+* Payments
+* Expenses
+* Profit
+* Receivables
+* Activity
+* Settings
+
+### Smart Add modal
+
+Allow:
+
+* Upload screenshot
+* Import CSV
+* Show “Email forward coming soon” as placeholder only
+
+## Backend routes
+
+Add:
+
+* POST /assist/extract-image
+* POST /assist/create-entry
+* POST /assist/import-csv
+
+## Extraction behavior
+
+The model should classify the image into:
+
+* deal
+* payment
+* expense
+* barter
+* unknown
+
+Then extract these fields where possible:
+
+* source_type
+* entry_type
+* brand_name
+* campaign_name
+* income_type
+* amount
+* currency
+* date_detected
+* due_date
+* payment_status
+* platform_source
+* description
+* is_barter
+* counterparty
+* confidence
+* missing_fields
+* reasoning_summary
+
+## Important product rule
+
+Do not auto-create records immediately after extraction.
+Always show a confirmation/edit step first.
+
+## Database
+
+Add a new table:
+
+### extraction_drafts
+
+* id
+* user_id
+* source_type
+* entry_type
+* raw_file_url
+* extracted_json
+* confidence
+* status
+* created_at
+* updated_at
+
+Status values:
+
+* draft
+* confirmed
+* discarded
+
+## CSV import
+
+Support a basic CSV import flow:
+
+1. upload CSV
+2. preview rows
+3. map columns
+4. import into deals or payments
+
+## UX tone
+
+Keep the experience human and light.
+
+Good examples:
+
+* “Upload a screenshot”
+* “Looks like a brand deal”
+* “Here’s what I found”
+* “Create entry?”
+* “Edit before saving”
+
+Avoid technical or accounting-heavy language.
+
+## Visual style
+
+Match Kitna’s existing premium UI.
+Use clean cards, confirmation drawers, editable fields, subtle status chips, and a calm upload flow.
+
+## Engineering note
+
+Implement this as a real full-stack feature, not mock UI.
+Use existing auth and database patterns.

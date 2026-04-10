@@ -1,0 +1,314 @@
+Refine Kitna as a cohesive creator-business product across Dashboard, Deals, Payments, and Smart Add.
+
+## Goal
+
+Make Kitna feel like a premium, clear, highly usable money command center for creators and creator managers.
+
+The product should always answer:
+
+* what was booked
+* what was received
+* what is still pending
+* what was spent
+* what was actually kept
+
+Keep the current dashboard vibe and brand direction, but improve the product across the main workflows.
+
+---
+
+## 1. Dashboard improvements
+
+Keep the current dashboard structure and visual direction, especially the strong hero card:
+
+* “Kitna actual bana?”
+* “after everything”
+* amount + “you kept”
+
+Refine the dashboard so it feels smarter and more useful:
+
+* keep the hero card as the main focus
+* keep summary cards for Booked, Received, Still to come, You spent
+* make all labels human and creator-friendly
+* keep the insight strip and make it feel more intelligent
+* improve chart readability and storytelling
+* make recent sections more useful and compact
+
+Dashboard should feel like:
+
+* an overview page
+* premium
+* calm
+* actionable
+* emotionally clear
+
+---
+
+## 2. Deals page improvements
+
+Make the Deals page the core working page of Kitna.
+
+It should immediately show:
+
+* which deal this is
+* how much was agreed
+* how much has been received
+* how much is still pending
+* whether it is overdue
+* what kind of income it is
+
+### Page structure
+
+At the top:
+
+* title: Deals
+* subtitle: All your expected money
+* search bar
+* filter pills
+* Add Deal button
+
+Add a compact summary strip above the list:
+
+* Active deals
+* Overdue deals
+* Pending amount
+* Booked this month
+
+### Main list
+
+Do NOT use a dense enterprise table as the primary experience.
+Use a structured list of deal cards or hybrid list rows.
+
+Each deal item should show:
+
+* brand/client name
+* campaign/deal title
+* status badge
+* income type badge
+* short deliverable summary if available
+* received amount out of total amount
+* pending amount clearly
+* progress bar
+* start date
+* due date
+
+### Actions
+
+Each deal item should support:
+
+* Add Payment
+* Edit
+* Mark Paid
+* View Details
+
+### Status styling
+
+Use subtle premium badges:
+
+* Active = soft blue
+* Partially paid = amber
+* Paid = soft green
+* Overdue = soft red
+* Barter = muted neutral or amber
+* Draft = grey
+
+### Copy examples
+
+Use language like:
+
+* “Received ₹20,000 of ₹50,000”
+* “₹30,000 still to come”
+* “Due 15 Apr”
+* “Payment overdue”
+* “Barter value ₹8,000”
+
+The Deals page should feel highly scan-friendly and satisfying.
+
+---
+
+## 3. Payments page improvements
+
+Make the Payments page feel like actual money movement, not just a flat records list.
+
+### Page structure
+
+At the top:
+
+* title: Payments
+* subtitle: Money that actually came in
+* search
+* filters
+* Add Payment button
+
+Add compact summary stats:
+
+* Total received this month
+* Partial payments
+* Completed deals from payments
+* Recent payment methods
+
+### Payment items
+
+Each payment item or row should show:
+
+* linked deal name
+* brand/client name
+* amount received
+* date received
+* payment method
+* whether this payment was partial or full
+* optional note
+
+### Important logic
+
+Make it visually clear when:
+
+* a payment partially advances a deal
+* a payment completes a deal
+* multiple payments belong to one deal
+
+### UX
+
+Allow users to:
+
+* add payment directly
+* link payment to an existing deal
+* quickly jump to that deal
+* understand which deals are still incomplete after payment
+
+Use the same premium visual style as the dashboard and deals page.
+
+---
+
+## 4. Smart Add / assisted entry
+
+Add Smart Add as a major product workflow.
+
+This should make Kitna feel like a smart assistant, not accounting software.
+
+### Smart Add options
+
+Create a Smart Add entry point that supports:
+
+* Upload screenshot
+* Import CSV
+* Email forward coming soon
+
+### Screenshot upload
+
+Support this future-oriented flow in UI and structure:
+User uploads:
+
+* WhatsApp screenshot
+* email screenshot
+* invoice screenshot
+* affiliate dashboard screenshot
+* payout screenshot
+
+Kitna should extract likely fields and show a confirmation step before creating the record.
+
+### Extracted draft UI
+
+Show:
+
+* detected entry type
+* extracted fields
+* confidence / missing fields
+* Create entry
+* Edit before saving
+* Save draft
+* Discard
+
+### Entry types
+
+Support:
+
+* deal
+* payment
+* expense
+* barter
+* unknown
+
+### CSV import
+
+Support a basic import flow:
+
+* upload CSV
+* preview rows
+* map columns
+* import into deals or payments
+
+### Sidebar
+
+Ensure sidebar includes:
+
+* Dashboard
+* Deals
+* Payments
+* Expenses
+* Profit
+* Receivables
+* Activity
+* Settings
+
+---
+
+## 5. Product-wide consistency
+
+Make Kitna feel like one coherent product across all pages.
+
+### Consistency rules
+
+* use the same color meaning everywhere
+
+* green = received / good / profit
+
+* amber = pending / partially paid
+
+* red = overdue / risk / spent
+
+* blue or neutral = structure / booked / active
+
+* use the same badge styling everywhere
+
+* use the same card radius, border, and padding system
+
+* use the same money language everywhere
+
+* use the same quick action hierarchy everywhere
+
+### Copy tone
+
+The product should sound:
+
+* clear
+* premium
+* conversational
+* creator-friendly
+* not accounting-heavy
+
+Preferred language:
+
+* “Booked”
+* “Received”
+* “Still to come”
+* “You spent”
+* “You kept”
+* “Money that actually came in”
+* “All your expected money”
+
+Avoid robotic finance language.
+
+---
+
+## Final product feeling
+
+Kitna should feel like:
+
+* a creator business command center
+* premium but easy
+* modern and calm
+* highly scan-friendly
+* very obvious about what needs follow-up
+
+Do not break existing backend logic.
+Refine structure, page hierarchy, visual clarity, working-page usability, and Smart Add entry flow.

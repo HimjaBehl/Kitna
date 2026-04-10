@@ -1,0 +1,322 @@
+Expand Kitna from a basic creator money dashboard into a more complete creator finance MVP covering revenue control, profit clarity, and India-ready compliance foundations.
+
+## Goal
+
+Kitna should support this roadmap inside the product:
+
+### MVP v1: Revenue + payment control
+
+* deal tracker
+* invoice tracker
+* payment reminders / due visibility
+* expected vs received amount
+* manager / agency cut
+* monthly cash received snapshot
+
+### MVP v2: Profit clarity
+
+* expenses
+* category-wise profit view
+* campaign-level profitability
+* recurring team costs
+* creator P&L by month
+
+### MVP v3: India-ready compliance layer
+
+* GST threshold alerts
+* TDS flags
+* barter/freebie value logging
+* export for CA / accountant
+
+Do not redesign the app from scratch.
+Expand the current product carefully and coherently.
+
+---
+
+## 1. Revenue + payment control improvements
+
+Strengthen the revenue system so it supports more realistic creator workflows.
+
+### Deals should support:
+
+* amount agreed
+* expected amount
+* received amount
+* pending amount
+* invoice amount
+* invoice number
+* invoice date
+* invoice status
+* due date
+* manager cut
+* agency cut
+
+### Add invoice tracking concepts
+
+Each deal should be able to show:
+
+* invoice status: not raised / raised / sent / paid
+* invoice amount
+* invoice date
+
+### Add manager / agency cut support
+
+Support either:
+
+* percentage cut
+* fixed amount cut
+
+Show this clearly inside deal details and in profitability calculations.
+
+### Revenue control pages should make it clear:
+
+* what was booked
+* what was invoiced
+* what was received
+* what is still pending
+* what cuts apply
+
+### Dashboard / summary layer should include:
+
+* monthly cash received snapshot
+* invoices pending
+* overdue payments
+* expected vs received
+
+---
+
+## 2. Profit clarity improvements
+
+Make the product capable of showing actual profitability, not just revenue.
+
+### Expenses
+
+Strengthen expense logic with:
+
+* category
+* linked deal or campaign optional
+* recurring vs one-time
+* recurring frequency
+* notes
+* vendor/payee optional
+
+### Profit page
+
+Improve Profit so it includes:
+
+* monthly P&L
+* category-wise expense view
+* category-wise profit view where possible
+* campaign-level profitability
+* recurring team and software costs
+* net profit by month
+
+### Campaign-level profitability
+
+For deals/campaigns, calculate:
+
+* amount received
+* direct linked expenses
+* manager/agency cut
+* estimated campaign profit
+
+### Recurring costs
+
+Support recurring expenses such as:
+
+* editor retainer
+* manager retainer
+* software subscriptions
+* team salaries / freelance retainers
+
+Use fields like:
+
+* is_recurring
+* recurring_frequency
+
+---
+
+## 3. India-ready compliance foundations
+
+Add compliance-supporting structure to the app, even if some advanced alert logic is initially lightweight.
+
+### GST support
+
+Add GST-related tracking fields and dashboard logic:
+
+* taxable revenue tracking
+* GST applicable flag
+* GST threshold progress
+* threshold warning state or alert placeholder
+
+### TDS support
+
+Support TDS fields on relevant deals/payments:
+
+* TDS applicable
+* TDS deducted
+* TDS amount
+
+Show these in a simple, understandable way.
+
+### Barter / freebies
+
+Improve barter logging:
+
+* barter item/service description
+* barter estimated value
+* taxable flag
+* linked campaign or deal
+* display clearly in deals/profit/compliance context
+
+### Export for CA / accountant
+
+Add export support or clean export placeholders for:
+
+* deals export
+* payments export
+* expenses export
+* monthly summary export
+
+If full export is not implemented yet, create the UI and structure cleanly and make it easy to add.
+
+---
+
+## 4. Product structure changes
+
+Update the app structure to support this broader creator finance workflow.
+
+### Sidebar
+
+Use:
+
+* Dashboard
+* Deals
+* Payments
+* Expenses
+* Profit
+* Receivables
+* Activity
+* Compliance
+* Settings
+
+If Compliance is not fully implemented yet, it can launch as a clean “coming soon / basics available” page, but the structure should exist.
+
+---
+
+## 5. Data model / schema expansion
+
+Expand the backend data model to support the above features.
+
+### Deals
+
+Add fields such as:
+
+* invoice_number
+* invoice_date
+* invoice_status
+* invoice_amount
+* manager_cut_type
+* manager_cut_value
+* agency_cut_type
+* agency_cut_value
+* gst_applicable
+* taxable_value
+* tds_applicable
+* tds_amount
+* barter_description
+* taxable_flag
+
+### Expenses
+
+Add fields such as:
+
+* is_recurring
+* recurring_frequency
+* vendor_or_payee
+* linked_campaign_or_deal
+
+### Payments
+
+Add support for:
+
+* TDS deducted
+* TDS amount if applicable
+* better payment-to-deal completion context
+
+### Compliance-ready calculations
+
+Support derived logic for:
+
+* GST threshold progress
+* TDS tracked amounts
+* barter value tracked
+* CA export readiness
+
+---
+
+## 6. UI and page changes
+
+### Deals page
+
+Show richer deal details where useful:
+
+* invoice state
+* manager/agency cut
+* taxable/barter flags
+* pending amount
+* clearer profitability context
+
+### Payments page
+
+Show:
+
+* gross received
+* deductions if relevant
+* linked deal completion state
+* TDS context if applicable
+
+### Profit page
+
+Make this a stronger page.
+It should feel like a real creator P&L view, not repeated dashboard data.
+
+### Compliance page
+
+Create a clean page for:
+
+* GST threshold progress
+* TDS tracked
+* barter/freebie value logged
+* export actions
+* clean summary cards and explanations
+
+---
+
+## 7. UX principles
+
+Keep the product:
+
+* premium
+* calm
+* creator-friendly
+* not accounting-heavy
+
+Use simple labels and understandable language.
+Do not make the app feel like CA software.
+It should still feel like Kitna.
+
+---
+
+## 8. Implementation priority
+
+Implement this in a sensible order without breaking existing functionality:
+
+1. Revenue + payment control enhancements
+2. Profit clarity enhancements
+3. Compliance foundations
+4. Export actions / placeholders
+5. Final consistency pass
+
+Keep the app stable and coherent throughout.
+Do not break existing core flows.
